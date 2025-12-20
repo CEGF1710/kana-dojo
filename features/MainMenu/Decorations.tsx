@@ -48,6 +48,49 @@ type CharacterStyle = {
 type AnimState = 'idle' | 'exploding' | 'hidden' | 'fading-in';
 
 // ============================================================================
+// CONFIGURATION
+// ============================================================================
+
+// Grid configuration - matches Tailwind classes
+const GRID_CONFIG = {
+  desktop: { cols: 28, cellSize: 36, gap: 2 }, // grid-cols-28, text-4xl ~ 36px
+  mobile: { cols: 10, cellSize: 36, gap: 2 } // grid-cols-10
+};
+
+// Calculate how many characters to render based on viewport
+const calculateVisibleCount = (interactive: boolean): number => {
+  if (typeof window === 'undefined') {
+    // SSR fallback - render enough for large screens
+    return 784; // 28 cols × 28 rows
+  }
+
+  const config = interactive
+    ? window.innerWidth >= 768
+      ? GRID_CONFIG.desktop
+      : GRID_CONFIG.mobile
+    : GRID_CONFIG.desktop;
+
+  const { cols, cellSize, gap } = config;
+  const viewHeight = window.innerHeight;
+  const viewWidth = window.innerWidth;
+
+  // Calculate rows that fit in viewport
+  const effectiveHeight = viewHeight - 16; // padding
+  const rowHeight = cellSize + gap;
+  const visibleRows = Math.ceil(effectiveHeight / rowHeight);
+
+  // Add buffer rows for scroll/resize
+  const bufferRows = 2;
+  const totalRows = visibleRows + bufferRows;
+
+  // Calculate total visible characters
+  const effectiveCols =
+    interactive && window.innerWidth < 768 ? GRID_CONFIG.mobile.cols : cols;
+
+  return effectiveCols * totalRows;
+};
+
+// ============================================================================
 // MODULE-LEVEL CACHING - Load once, use forever within session
 // ============================================================================
 
@@ -55,7 +98,7 @@ let decorationsCache: string[] | null = null;
 let decorationsLoadingPromise: Promise<string[]> | null = null;
 let fontsCache: DecorationFont[] | null = null;
 let fontsLoadingPromise: Promise<DecorationFont[]> | null = null;
-let precomputedStylesCache: CharacterStyle[] | null = null;
+const precomputedStylesCache: Map<number, CharacterStyle[]> = new Map();
 
 // Get all available main colors from themes (computed once at module load)
 const allMainColors = (() => {
@@ -67,7 +110,7 @@ const allMainColors = (() => {
   return Array.from(colors);
 })();
 
-// Fisher-Yates shuffle (more efficient than sort-based)
+// Fisher-Yates shuffle (more efficient and unbiased)
 const shuffle = <T,>(arr: T[]): T[] => {
   const result = arr.slice();
   for (let i = result.length - 1; i > 0; i--) {
@@ -113,18 +156,35 @@ const loadDecorationFonts = async (
   return fontsLoadingPromise;
 };
 
-// Pre-compute all styles once (characters + colors + fonts + delays)
+// Pre-compute styles for a specific count of characters
 const precomputeStyles = async (
+  count: number,
   forceShow = false
 ): Promise<CharacterStyle[]> => {
-  if (precomputedStylesCache) return precomputedStylesCache;
+  // Check cache for this count
+  const cached = precomputedStylesCache.get(count);
+  if (cached) return cached;
 
-  const [chars, fonts] = await Promise.all([
+  const [allChars, fonts] = await Promise.all([
     loadDecorations(),
     loadDecorationFonts(forceShow)
   ]);
 
-  precomputedStylesCache = chars.map(char => ({
+  // If we need more chars than available, repeat them
+  let chars: string[];
+  if (count <= allChars.length) {
+    chars = allChars.slice(0, count);
+  } else {
+    // Repeat characters to fill the needed count
+    chars = [];
+    while (chars.length < count) {
+      chars.push(
+        ...allChars.slice(0, Math.min(allChars.length, count - chars.length))
+      );
+    }
+  }
+
+  const styles = chars.map(char => ({
     char,
     color: allMainColors[Math.floor(Math.random() * allMainColors.length)],
     fontClass:
@@ -134,7 +194,8 @@ const precomputeStyles = async (
     animationDelay: `${Math.floor(Math.random() * 1000)}ms`
   }));
 
-  return precomputedStylesCache;
+  precomputedStylesCache.set(count, styles);
+  return styles;
 };
 
 // ============================================================================
@@ -154,13 +215,29 @@ const Decorations = ({
   const [animStates, setAnimStates] = useState<Map<number, AnimState>>(
     new Map()
   );
+  const [visibleCount, setVisibleCount] = useState<number>(() =>
+    calculateVisibleCount(interactive)
+  );
   const { playClick } = useClick();
 
-  // Load all data and styles once on mount
+  // Handle viewport resize
+  useEffect(() => {
+    const handleResize = () => {
+      const newCount = calculateVisibleCount(interactive);
+      if (newCount !== visibleCount) {
+        setVisibleCount(newCount);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [interactive, visibleCount]);
+
+  // Load styles when visible count changes
   useEffect(() => {
     let isMounted = true;
 
-    precomputeStyles(forceShow).then(computedStyles => {
+    precomputeStyles(visibleCount, forceShow).then(computedStyles => {
       if (isMounted) {
         setStyles(computedStyles);
       }
@@ -169,7 +246,7 @@ const Decorations = ({
     return () => {
       isMounted = false;
     };
-  }, [forceShow]);
+  }, [visibleCount, forceShow]);
 
   // Memoized explosion handler
   const triggerExplosion = useCallback(
@@ -241,6 +318,9 @@ const Decorations = ({
             transformOrigin: 'center center',
             pointerEvents:
               interactive && animState !== 'idle' ? 'none' : undefined,
+            // content-visibility for off-screen paint optimization
+            contentVisibility: 'auto',
+            containIntrinsicSize: '36px',
             ...getAnimationStyle(index, style.animationDelay)
           }}
           onClick={isClickable ? () => triggerExplosion(index) : undefined}

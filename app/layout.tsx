@@ -140,6 +140,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           crossOrigin='anonymous'
         />
         {/* Prefetch critical JSON data for faster navigation */}
+        <link rel='prefetch' href='/kanji/decorations.json' as='fetch' />
         <link rel='prefetch' href='/kanji/N5.json' as='fetch' />
         <link rel='prefetch' href='/vocab/n5.json' as='fetch' />
         <link rel='prefetch' href='/japan-facts.json' as='fetch' />
