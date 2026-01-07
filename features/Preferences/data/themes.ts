@@ -242,9 +242,9 @@ const baseThemeSets: BaseThemeGroup[] = [
     themes: [
       {
         id: 'kumonasu',
-        backgroundColor: 'oklch(19.0% 0.043 302.0 / 1)',   
-        mainColor: 'oklch(93.0% 0.165 265.0 / 1)',         
-        secondaryColor: 'oklch(92.0% 0.140 200.0 / 1)',    
+        backgroundColor: 'oklch(19.0% 0.043 302.0 / 1)',
+        mainColor: 'oklch(93.0% 0.165 265.0 / 1)',
+        secondaryColor: 'oklch(92.0% 0.140 200.0 / 1)',
       },
       {
         id: 'kuromizu',
@@ -833,6 +833,12 @@ const baseThemeSets: BaseThemeGroup[] = [
         backgroundColor: 'oklch(18.5% 0.042 306.0 / 1)',
         mainColor: 'oklch(96.0% 0.125 290.0 / 1)',
         secondaryColor: 'oklch(98.0% 0.118 111.0 / 1)'
+      },
+      {
+        id: 'morion',
+        backgroundColor: 'oklch(20.0% 0.054 255.0 / 1)',    // ink blue
+        mainColor: 'oklch(92.5% 0.190 130.0 / 1)',           // glacial lime
+        secondaryColor: 'oklch(84.0% 0.140 85.0 / 1)',       // smoky saffron
       }
     ]
   },
