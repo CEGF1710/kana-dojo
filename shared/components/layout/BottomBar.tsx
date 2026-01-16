@@ -30,13 +30,13 @@ type SocialLink = {
 
 const socialLinks: SocialLink[] = [
   {
-    icon: faGithub,
-    url: 'https://github.com/lingdojo/kana-dojo',
+    icon: faDiscord,
+    url: 'https://discord.gg/CyvBNNrSmb',
     type: 'fontawesome'
   },
   {
-    icon: faDiscord,
-    url: 'https://discord.gg/CyvBNNrSmb',
+    icon: faGithub,
+    url: 'https://github.com/lingdojo/kana-dojo',
     type: 'fontawesome'
   },
   {
