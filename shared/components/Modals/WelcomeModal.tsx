@@ -3,7 +3,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
-import { X, Palette, Type, ChevronRight, ChevronLeft } from 'lucide-react';
+import {
+  X,
+  Palette,
+  Type,
+  ChevronRight,
+  ChevronLeft,
+  CircleStar,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -182,6 +189,7 @@ const WelcomeModal = () => {
                   router.push('/demo');
                 }}
               >
+                <CircleStar className='h-6 w-6' />
                 {t('steps.welcome.demoCta')}
               </ActionButton>
             </div>
