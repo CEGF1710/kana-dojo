@@ -195,18 +195,18 @@
     "id": 33,
     "fact": "Japanese toilet seats often have built-in bidets with heated seats, air dryers, and sound effects to mask embarrassing noises.",
     "issued": false,
-    "completed": false
+    "completed": true
   },
   {
     "id": 34,
     "fact": "There's a Japanese festival called 'Hadaka Matsuri' where thousands of nearly naked men compete to catch lucky charms thrown by priests.",
     "issued": false,
-    "completed": false
+    "completed": true
   },
   {
     "id": 35,
     "fact": "The word 'hikikomori' (å¼•ãã“ã‚‚ã‚Š) describes people who withdraw completely from society, sometimes staying in their rooms for years.",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
