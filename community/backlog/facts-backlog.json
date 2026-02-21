@@ -806,7 +806,7 @@
   {
     "id": 135,
     "fact": "There's a Japanese concept 'itadakimasu' (ã„ãŸã ãã¾ã™) - said before eating - acknowledging all who contributed to the meal.",
-    "issued": false,
+    "issued": true,
     "completed": false
   },
   {
