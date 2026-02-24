@@ -15,8 +15,8 @@ import {
   applyTheme,
   isPremiumThemeId,
   getThemeDefaultWallpaperId,
-} from '@/features/Preferences/data/themes';
-import { getWallpaperById } from '@/features/Preferences/data/wallpapers';
+} from '@/features/Preferences/data/themes/themes';
+import { getWallpaperById } from '@/features/Preferences/data/wallpapers/wallpapers';
 import BackToTop from '@/shared/components/navigation/BackToTop';
 import MobileBottomBar from '@/shared/components/layout/BottomBar';
 import { useVisitTracker } from '@/features/Progress/hooks/useVisitTracker';
@@ -49,7 +49,7 @@ const loadFontsModule = async (): Promise<FontObject[]> => {
   if (fontsCache) return fontsCache;
   if (fontsLoadingPromise) return fontsLoadingPromise;
 
-  fontsLoadingPromise = import('@/features/Preferences/data/fonts').then(
+  fontsLoadingPromise = import('@/features/Preferences/data/fonts/fonts').then(
     module => {
       fontsCache = module.default;
       fontsLoadingPromise = null;

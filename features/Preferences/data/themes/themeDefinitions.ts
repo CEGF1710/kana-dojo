@@ -15,7 +15,7 @@ import {
   TreePine,
   Sparkles,
 } from 'lucide-react';
-import { GENERATED_WALLPAPERS } from './wallpapers.generated';
+import { GENERATED_WALLPAPERS } from '../wallpapers/wallpapers.generated';
 
 // Base theme definition - only essential colors, card/border are derived
 export interface BaseTheme {

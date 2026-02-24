@@ -5,8 +5,8 @@ import {
   isPremiumThemeId,
   getWallpaperStyles,
   getThemeDefaultWallpaperId,
-} from '@/features/Preferences/data/themes';
-import { getWallpaperById } from '@/features/Preferences/data/wallpapers';
+} from '@/features/Preferences/data/themes/themes';
+import { getWallpaperById } from '@/features/Preferences/data/wallpapers/wallpapers';
 import usePreferencesStore from '@/features/Preferences/store/usePreferencesStore';
 import { useClick } from '@/shared/hooks/useAudio';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
@@ -163,7 +163,7 @@ export default function ThemesModal({ open, onOpenChange }: ThemesModalProps) {
 
   useEffect(() => {
     if (open && !isLoaded) {
-      import('@/features/Preferences/data/themes').then(module => {
+      import('@/features/Preferences/data/themes/themes').then(module => {
         setThemeSets(
           // Temporarily hide seasonal groups + Extra group in the modal.
           module.default.filter(

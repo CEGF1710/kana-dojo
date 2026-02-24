@@ -25,9 +25,9 @@ export { default as ThemesModal } from './components/ThemesModal';
 export { default as FontsModal } from './components/FontsModal';
 
 // Data (read-only) - Note: Import defaults, not named exports
-export { default as themeSets } from './data/themes';
-// export { default as themes } from './data/themes';
-export { default as fonts } from './data/fonts';
+export { default as themeSets } from './data/themes/themes';
+// export { default as themes } from './data/themes/themes';
+export { default as fonts } from './data/fonts/fonts';
 
 // ============================================================================
 // PRIVATE - DO NOT IMPORT DIRECTLY

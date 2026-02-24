@@ -6,8 +6,8 @@ import themeSets, {
   getThemeDefaultWallpaperId,
   isPremiumThemeId,
   // hexToHsl
-} from '@/features/Preferences/data/themes';
-import { getWallpaperById } from '@/features/Preferences/data/wallpapers';
+} from '@/features/Preferences/data/themes/themes';
+import { getWallpaperById } from '@/features/Preferences/data/wallpapers/wallpapers';
 import usePreferencesStore from '@/features/Preferences/store/usePreferencesStore';
 import clsx from 'clsx';
 import { useClick, useLong } from '@/shared/hooks/useAudio';

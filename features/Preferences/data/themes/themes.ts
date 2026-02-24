@@ -5,14 +5,14 @@
  * All base theme palettes live in ./themeDefinitions.ts.
  * All color math lives in ./themeColors.ts.
  */
-import { useCustomThemeStore } from '../store/useCustomThemeStore';
-import { useCustomWallpaperStore } from '../store/useCustomWallpaperStore';
+import { useCustomThemeStore } from '../../store/useCustomThemeStore';
+import { useCustomWallpaperStore } from '../../store/useCustomWallpaperStore';
 import {
   getWallpaperById,
   registerCustomWallpaper,
   unregisterCustomWallpaper,
-} from './wallpapers';
-import usePreferencesStore from '../store/usePreferencesStore';
+} from '../wallpapers/wallpapers';
+import usePreferencesStore from '../../store/usePreferencesStore';
 import { LucideIcon } from 'lucide-react';
 import baseThemeSets from './themeDefinitions';
 import type { BaseTheme } from './themeDefinitions';

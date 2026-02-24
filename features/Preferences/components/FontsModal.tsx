@@ -1,7 +1,7 @@
 'use client';
 
-import fonts from '@/features/Preferences/data/fonts';
-import { isRecommendedFont } from '@/features/Preferences/data/recommendedFonts';
+import fonts from '@/features/Preferences/data/fonts/fonts';
+import { isRecommendedFont } from '@/features/Preferences/data/fonts/recommendedFonts';
 import usePreferencesStore from '@/features/Preferences/store/usePreferencesStore';
 import { useClick } from '@/shared/hooks/useAudio';
 import * as DialogPrimitive from '@radix-ui/react-dialog';

@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import usePreferencesStore from '@/features/Preferences/store/usePreferencesStore';
-import { CLICK_EFFECTS } from '@/features/Preferences/data/effectsData';
-import { getEmojiBitmap } from '@/features/Preferences/data/emojiBitmapCache';
+import { CLICK_EFFECTS } from '@/features/Preferences/data/effects/effectsData';
+import { getEmojiBitmap } from '@/features/Preferences/data/effects/emojiBitmapCache';
 
 // ─── Particle ─────────────────────────────────────────────────────────────────
 
