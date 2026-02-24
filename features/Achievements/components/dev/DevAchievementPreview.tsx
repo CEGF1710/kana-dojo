@@ -22,6 +22,10 @@ const DUMMY_ACHIEVEMENT: Achievement = {
  */
 const DevAchievementPreview = () => {
   useEffect(() => {
+    const state = useAchievementStore.getState();
+    // Strict Mode mounts twice in dev — skip if one is already pending
+    if (state.unseenNotifications.some(n => n.id.startsWith('__dev_preview__'))) return;
+
     const notification: AchievementNotification = {
       id: `__dev_preview__-${Date.now()}`,
       achievement: DUMMY_ACHIEVEMENT,
