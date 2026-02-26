@@ -393,6 +393,25 @@ jobs:
             echo "No backlog changes to commit"
             exit 0
           fi
-          git commit -m "chore(automation): re-enable stale items in backlog"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          commit_msg="chore(automation): re-enable stale items in backlog"
+          max_attempts=5
+          attempt=1
+          while [ "$attempt" -le "$max_attempts" ]; do
+            git commit -m "$commit_msg"
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              echo "Backlog push succeeded on attempt $attempt"
+              exit 0
+            fi
+            echo "Backlog push attempt $attempt failed; retrying..."
+            git rebase --abort || true
+            git fetch origin main
+            git reset --hard origin/main
+            git add community/backlog/
+            if git diff --cached --quiet; then
+              echo "No backlog changes remain after sync"
+              exit 0
+            fi
+            attempt=$((attempt + 1))
+          done
+          echo "Failed to push backlog updates after $max_attempts attempts"
+          exit 1
